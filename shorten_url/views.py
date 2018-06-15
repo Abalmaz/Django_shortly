@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.utils.crypto import get_random_string
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from shorten_url.models import WebUrl
@@ -19,8 +19,8 @@ def shorten(request):
         validate = URLValidator()
         try:
             validate(url)
-        except ValidationError as e:
-            print(e)
+        except:
+            return HttpResponse('<h1>URL is not valid</h1>')
 
         try:
             get_url = WebUrl.objects.get(url=url)           
@@ -38,7 +38,10 @@ def shorten(request):
 
 
 def redirect_to_url(request, short_url):
-    url = WebUrl.objects.get(short_url=short_url)
+    try:
+        url = WebUrl.objects.get(short_url=short_url)
+    except:
+        return HttpResponse('<h1>URL was found</h1>')	
     url.visit_count += 1
     url.save()
     return HttpResponseRedirect(url.url)
