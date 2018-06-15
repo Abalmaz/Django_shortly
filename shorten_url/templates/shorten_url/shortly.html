@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shorten Url</title>
+</head>
+<body>
+<form action="shortly" method=post>
+	{% csrf_token %}
+    <p>URL:
+      <input type=text name=url class=urlinput>
+      <input type=submit value="Shorten">
+  </form>
+  {{ new_url.short_url }}
+  {{ new_url.visit_count }}
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shorten Url</title>
+</head>
+<body>
+    <a href="/shortly">Short you URL</a>
+    {% for url in urls %}
+        {{ url.short_url }}
+        {{ url.visit_count }}
+    {% endfor %}
+</body>
+</html>
