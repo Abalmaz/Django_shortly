@@ -1,14 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Shorten Url</title>
-</head>
-<body>
-    <a href="/shortly">Short you URL</a>
-    {% for url in urls %}
-        {{ url.short_url }}
-        {{ url.visit_count }}
-    {% endfor %}
-</body>
-</html>
+{% extends 'shorten_url/layout.html' %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="mb-4">
+            <a href="/shortly" class="btn btn-success">Short you URL</a>
+        </div>
+        <table class="table">
+          <thead class="thead-inverse">
+              <tr>
+                <th>Short Url</th>
+                <th>Count of visits</th>
+              </tr>
+          </thead>
+            </tbody>
+            {% for url in urls %}
+            <tr>
+              <td>
+                <a  href="visit_url/{{ url.short_url }}" target="_blank">{{ url.short_url }}</a>
+              </td>
+              <td class="align-middle">{{ url.visit_count }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>  
+        </table>
+</div> 
+
+{% endblock %}

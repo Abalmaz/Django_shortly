@@ -1,17 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Shorten Url</title>
-</head>
-<body>
-<form action="shortly" method=post>
-	{% csrf_token %}
-    <p>URL:
-      <input type=text name=url class=urlinput>
-      <input type=submit value="Shorten">
-  </form>
-  {{ new_url.short_url }}
-  {{ new_url.visit_count }}
-</body>
-</html>
+{% extends 'shorten_url/layout.html' %}
+{% block body %}
+<div class="container">  
+	<div class="col-md-4">
+		<form action="shortly" method=post>
+			{% csrf_token %}
+		    <p>URL:
+		      <input type=text name=url class=urlinput>
+		      <input type=submit value="Shorten"  class="btn btn-success">
+		  </form>
+	  {% if new_url %}
+	  <a href="visit_url/{{ new_url.short_url }}" target="_blank">{{ new_url.short_url }}</a>
+	  <p>Count of visit: {{ new_url.visit_count }}
+	  	{% endif %}
+	</div>
+</div>	  	
+{% endblock %}

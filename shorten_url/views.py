@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.utils.crypto import get_random_string
+from django.http import HttpResponseRedirect
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from shorten_url.models import WebUrl
@@ -8,7 +9,7 @@ from shorten_url.models import WebUrl
 
 # Create your views here.
 def index(request):
-    urls = WebUrl.objects.all()
+    urls = WebUrl.objects.order_by('-visit_count')[:5]
     return render(request, 'shorten_url/index.html', {'urls': urls})
 
 def shorten(request):
@@ -40,11 +41,11 @@ def redirect_to_url(request, short_url):
     url = WebUrl.objects.get(short_url=short_url)
     url.visit_count += 1
     url.save()
-    return HttpResponseRedirect(url.httpurl)
+    return HttpResponseRedirect(url.url)
 
 def shortened():
     while True:
-        short_url = 'short.url/' + get_random_string(length=12)
+        short_url = 'short.url.' + get_random_string(length=12)
         try:
             temp = WebUrl.objects.get(short_url=short_url)
         except:
