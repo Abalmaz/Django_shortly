@@ -1,10 +1,16 @@
 {% extends 'shorten_url/layout.html' %}
 {% block body %}
 <div class="container">  
-	<div class="col-md-4">
-	  <a href="visit_url/{{ new_url.short_url }}" target="_blank">{{ new_url.short_url }}</a>
-	  <p>Full url: {{ new_url.url }}</p>
-	  <p>Count of visit: {{ new_url.visit_count }}
+	<div class="col-md-8">
+		<div>
+			<strong>Short url:</strong> <a href="visit_url/{{ new_url.short_url }}" target="_blank">{{ new_url.short_url }}</a>
+		</div>
+		<div>
+			<strong>Full url:</strong> {{ new_url.url }}
+		</div>
+		<div>
+			<strong>Count of visit:</strong> {{ new_url.visit_count }}
+		</div>
 	</div>
 </div>	  	
 {% endblock %}

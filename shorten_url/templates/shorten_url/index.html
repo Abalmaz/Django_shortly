@@ -6,7 +6,11 @@
         <div class="mb-4">
           <form  method=post>
             {% csrf_token %}
-            {{ form }}
+            {% for field in form %}
+              <div class="fieldWrapper">
+                  {{ field.errors }}
+                  {{ field.label_tag }} {{ field }}
+            {% endfor %}
             <input type=submit value="Shorten"  class="btn btn-success">
           </form>
         </div>
