@@ -1,40 +1,41 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils.crypto import get_random_string
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from shorten_url.models import WebUrl
+from shorten_url.forms import UrlForm
+from django.views.generic import View
 
-
-
-# Create your views here.
-def index(request):
-    urls = WebUrl.objects.order_by('-visit_count')[:5]
-    return render(request, 'shorten_url/index.html', {'urls': urls})
-
-def shorten(request):
-    if request.method == 'POST':
-        url = request.POST.get("url", '')
-        
-        validate = URLValidator()
-        try:
-            validate(url)
-        except:
-            return HttpResponse('<h1>URL is not valid</h1>')
-
-        try:
-            get_url = WebUrl.objects.get(url=url)           
-        except:
-
-            short_url = shortened()
-            new_url = WebUrl(url=url, short_url=short_url)
-            new_url.save()
-        
-            return render(request, 'shorten_url/shortly.html', {'new_url': new_url})
-        return render(request, 'shorten_url/shortly.html', {'new_url': get_url})    
+class UrlView(View):
     
-    else:
-         return render(request, 'shorten_url/shortly.html')   
+    def get(self, request, pk=None):
+        
+        if not pk:
+            urls = WebUrl.objects.order_by('-visit_count')[:5]
+            form = UrlForm()
+            return render(request, 'shorten_url/index.html', {'urls': urls, 'form': form})
+        
+        else:
+        	url=get_object_or_404(WebUrl, id=pk)
+        	return render(request, 'shorten_url/detail.html', new_url=url)
+            
+    
+    def post(self, request):
+        form = UrlForm(request.POST)
+        if form.is_valid():
+            try:
+                new_url = WebUrl.objects.get(url=form.cleaned_data['url'])           
+            except:
+                new_url = form.save(commit=False)
+                new_url.short_url = shortened()
+                new_url.save()
+            
+            return render(request, 'shorten_url/detail.html', {'new_url': new_url})
+
+        return render(request, 'shorten_url/index.html', {'urls': urls, 'form': form})
+
+		
 
 
 def redirect_to_url(request, short_url):
@@ -45,6 +46,7 @@ def redirect_to_url(request, short_url):
     url.visit_count += 1
     url.save()
     return HttpResponseRedirect(url.url)
+
 
 def shortened():
     while True:

@@ -4,4 +4,4 @@ from shorten_url.models import WebUrl
 class UrlForm(ModelForm):
 	class Meta:
 		model = WebUrl
-		fields = ['url', 'shorten_url']
+		fields = ['url']

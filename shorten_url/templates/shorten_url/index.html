@@ -4,7 +4,11 @@
 
     <div class="container">
         <div class="mb-4">
-            <a href="/shortly" class="btn btn-success">Short you URL</a>
+          <form  method=post>
+            {% csrf_token %}
+            {{ form }}
+            <input type=submit value="Shorten"  class="btn btn-success">
+          </form>
         </div>
         <table class="table">
           <thead class="thead-inverse">

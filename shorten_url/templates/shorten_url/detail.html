@@ -2,16 +2,9 @@
 {% block body %}
 <div class="container">  
 	<div class="col-md-4">
-		<form action="shortly" method=post>
-			{% csrf_token %}
-		    <p>URL:
-		      <input type=text name=url class=urlinput>
-		      <input type=submit value="Shorten"  class="btn btn-success">
-		  </form>
-	  {% if new_url %}
 	  <a href="visit_url/{{ new_url.short_url }}" target="_blank">{{ new_url.short_url }}</a>
+	  <p>Full url: {{ new_url.url }}</p>
 	  <p>Count of visit: {{ new_url.visit_count }}
-	  	{% endif %}
 	</div>
 </div>	  	
 {% endblock %}
