@@ -2,14 +2,16 @@
 {% block body %}
 <div class="container">  
 	<div class="col-md-8">
+
+		<a href='/' class="btn btn-success">Home</a>
 		<div>
-			<strong>Short url:</strong> <a href="visit_url/{{ new_url.short_url }}" target="_blank">{{ new_url.short_url }}</a>
+			<strong>Short url:</strong> <a href="visit_url/{{ url.short_url }}" target="_blank">{{ url.short_url }}</a>
 		</div>
 		<div>
-			<strong>Full url:</strong> {{ new_url.url }}
+			<strong>Full url:</strong> {{ url.url }}
 		</div>
 		<div>
-			<strong>Count of visit:</strong> {{ new_url.visit_count }}
+			<strong>Count of visit:</strong> {{ url.visit_count }}
 		</div>
 	</div>
 </div>	  	

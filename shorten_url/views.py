@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.crypto import get_random_string
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.validators import URLValidator
@@ -17,8 +17,8 @@ class UrlView(View):
             return render(request, 'shorten_url/index.html', {'urls': urls, 'form': form})
         
         else:
-        	url=get_object_or_404(WebUrl, id=pk)
-        	return render(request, 'shorten_url/detail.html', new_url=url)
+        	url=get_object_or_404(WebUrl, pk=pk)
+        	redirect('detail', pk=url.pk)
             
     
     def post(self, request):
@@ -31,11 +31,14 @@ class UrlView(View):
                 new_url.short_url = shortened()
                 new_url.save()
             
-            return render(request, 'shorten_url/detail.html', {'new_url': new_url})
+            return redirect(detail, pk=new_url.pk)
 
         return render(request, 'shorten_url/index.html', {'urls': urls, 'form': form})
 
-		
+	
+def detail(request, pk):
+    url = get_object_or_404(WebUrl, pk=pk)
+    return render(request, 'shorten_url/detail.html', {'url': url})  	
 
 
 def redirect_to_url(request, short_url):
